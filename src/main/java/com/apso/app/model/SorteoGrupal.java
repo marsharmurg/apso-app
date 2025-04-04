@@ -3,14 +3,14 @@ package com.apso.app.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Data
+@Table(name = "sorteos_grupales")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class SorteoGrupal {
 
     @Id
@@ -21,8 +21,9 @@ public class SorteoGrupal {
 
     private Integer cantidadGrupos;
 
-    private LocalDateTime fecha;
+    private String fechaSorteo;
 
-    @OneToMany(mappedBy = "sorteo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Grupo> grupos;
+    // Relación muchos a muchos con Estudiante
+    @ManyToMany(mappedBy = "sorteos")
+    private List<Estudiante> estudiantes;
 }
