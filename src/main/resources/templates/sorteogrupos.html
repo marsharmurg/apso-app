@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sorteo de Grupos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <h1>Sorteo de Grupos</h1>
+    <form action="#" th:action="@{/sorteogrupos}" method="post">
+        <label for="cantidadGrupos">Número de grupos:</label>
+        <input type="number" id="cantidadGrupos" name="cantidadGrupos" min="1" required>
+        <button type="submit">Ejecutar sorteo</button>
+    </form>
+
+    <div th:if="${grupos != null}">
+        <h2>Grupos conformados:</h2>
+        <div th:each="grupo, iterStat : ${grupos}">
+            <h3>Grupo [[${iterStat.index + 1}]]</h3>
+            <ul>
+                <li th:each="estudiante : ${grupo}" th:text="${estudiante.nombre} + ' (' + ${estudiante.email} + ')'"></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
