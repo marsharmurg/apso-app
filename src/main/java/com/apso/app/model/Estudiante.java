@@ -1,42 +1,38 @@
 package com.apso.app.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "estudiantes")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Estudiante {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Cambié 'log' a 'Long'
+    private Long id;
 
-    @Column(nullable = false)
     private String nombre;
 
-    // Constructor vacío (necesario para JPA)
-    public Estudiante() {
-    }
+    private String email;
 
-    // Constructor con parámetros
-    public Estudiante(String nombre) {
-        this.nombre = nombre;
-    }
+    @Column(name = "grupo_teorico")
+    private String grupoTeorico;
 
-    // Getters y Setters
-    public Long getId() { // Cambié 'log' a 'Long'
-        return id;
-    }
+    // Relación muchos a muchos con SorteoGrupal
+    @ManyToMany
+    @JoinTable(
+        name = "estudiante_sorteo",
+        joinColumns = @JoinColumn(name = "estudiante_id"),
+        inverseJoinColumns = @JoinColumn(name = "sorteo_id")
+    )
+    private List<SorteoGrupal> sorteos;
 
-    public void setId(Long id) { // Cambié 'log' a 'Long'
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    // Constructor vacío y constructor con parámetros proporcionados por Lombok
 }
 
