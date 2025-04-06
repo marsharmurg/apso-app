@@ -16,13 +16,39 @@
     </form>
 
     <p th:if="${mensaje}" th:text="${mensaje}"></p>
+
+    <h2>Estudiantes cargados</h2>
+
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Grupo Teórico</th>
+                <th>Asignatura</th>
+                <th>Carga ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="estudiante : ${estudiantes}">
+                <td th:text="${estudiante.id}"></td>
+                <td th:text="${estudiante.nombre}"></td>
+                <td th:text="${estudiante.email}"></td>
+                <td th:text="${estudiante.grupoTeorico}"></td>
+                <td th:text="${estudiante.asignatura}"></td>
+                <td th:text="${estudiante.cargaId}"></td>
+            </tr>
+        </tbody>
+    </table>
+
 </body>
 
 <hr>
 
 <form method="post" action="/cargacsv/eliminar" onsubmit="return confirm('¿Estás seguro de que deseas eliminar TODOS los estudiantes?');">
     <button type="submit" style="background-color: red; color: white; padding: 8px 16px; border: none; border-radius: 4px;">
-        🗑️ Eliminar todos los estudiantes
+        Eliminar todos los estudiantes
     </button>
 </form>
 

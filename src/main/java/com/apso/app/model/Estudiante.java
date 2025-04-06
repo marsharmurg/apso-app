@@ -18,8 +18,9 @@ public class Estudiante {
     private Long id;
 
     private String nombre;
-
     private String email;
+    private String asignatura;
+    private Long cargaId;
 
     @Column(name = "grupo_teorico")
     private String grupoTeorico;

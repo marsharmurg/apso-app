@@ -16,26 +16,29 @@ public class CargaCSVController {
     private final CargaCSVService cargaCSVService;
 
     @GetMapping("/cargacsv")
-    public String mostrarFormularioCarga() {
+    public String mostrarFormularioCarga(Model model) {
+        model.addAttribute("estudiantes", estudianteRepository.findAll());
         return "cargacsv";
     }
 
     @PostMapping("/cargacsv")
     public String cargarArchivo(@RequestParam("file") MultipartFile file, Model model) {
+        model.addAttribute("estudiantes", estudianteRepository.findAll());
         try {
             cargaCSVService.cargarEstudiantesDesdeCSV(file);
             model.addAttribute("mensaje", "¡Carga exitosa!");
         } catch (Exception e) {
             model.addAttribute("mensaje", "Error al procesar el archivo: " + e.getMessage());
         }
-        return "cargacsv";
+        return "redirect:/cargacsv";
     }
 
     @PostMapping("/cargacsv/eliminar")
     public String eliminarTodosLosEstudiantes(Model model) {
+        model.addAttribute("estudiantes", estudianteRepository.findAll());
         estudianteRepository.deleteAll(); // Borra todos los registros
         model.addAttribute("mensaje", "Todos los estudiantes han sido eliminados exitosamente.");
-        return "cargacsv";
+        return "redirect:/cargacsv";
     }
 
 }
