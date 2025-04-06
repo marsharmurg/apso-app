@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Inicio</title>
+</head>
+<body>
+    <h1>Bienvenido a la App de Sorteos</h1>
+    <p>Selecciona una opción:</p>
+    
+    <ul>
+        <li><a th:href="@{/cargacsv}">Cargar lista de estudiantes</a></li>
+        <li><a th:href="@{/sorteogrupos}">Realizar sorteo de grupos</a></li>
+    </ul>
+</body>
+</html>

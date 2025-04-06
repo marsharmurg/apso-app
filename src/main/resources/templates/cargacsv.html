@@ -10,6 +10,10 @@
     
     <h1>Carga de Estudiantes desde CSV</h1>
 
+    <a th:href="@{/}" style="text-decoration: none;">
+        <button type="button">Volver al inicio</button>
+    </a>    
+
     <form method="post" enctype="multipart/form-data" th:action="@{/cargacsv}">
         <input type="file" name="file" accept=".csv" required />
         <button type="submit">Cargar CSV</button>
