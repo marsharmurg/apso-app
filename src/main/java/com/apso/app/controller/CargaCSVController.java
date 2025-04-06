@@ -1,6 +1,7 @@
 package com.apso.app.controller;
 
 import com.apso.app.service.CargaCSVService;
+import com.apso.app.repository.EstudianteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class CargaCSVController {
 
+    private final EstudianteRepository estudianteRepository;
     private final CargaCSVService cargaCSVService;
 
     @GetMapping("/cargacsv")
@@ -28,4 +30,12 @@ public class CargaCSVController {
         }
         return "cargacsv";
     }
+
+    @PostMapping("/cargacsv/eliminar")
+    public String eliminarTodosLosEstudiantes(Model model) {
+        estudianteRepository.deleteAll(); // Borra todos los registros
+        model.addAttribute("mensaje", "Todos los estudiantes han sido eliminados exitosamente.");
+        return "cargacsv";
+    }
+
 }
