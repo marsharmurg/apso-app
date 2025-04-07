@@ -1,0 +1,15 @@
+
+body { background-color: #f9f9f9; color: #212121; }
+.hero-section { padding: 60px 0; background-color: #7A0E17; color: white; text-align: center; }
+.btn-primary { background-color: #7A0E17; border-color: #7A0E17; }
+.btn-primary:hover { background-color: #A91B20; }
+.btn-danger { background-color: #A91B20; border-color: #A91B20; }
+.btn-danger:hover { background-color: #7A0E17; }
+.btn-custom { background-color: #7A0E17; border-color: #7A0E17; color: white; }
+.btn-custom:hover { background-color: #A91B20; border-color: #A91B20; }
+.section-title { border-left: 5px solid #7A0E17; padding-left: 10px; margin-bottom: 1.5rem; }
+.group-card { border: 1px solid #dee2e6; border-radius: 12px; box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.05); background-color: #fff; }
+.group-card .card-header { background-color: #f8f9fa; font-weight: bold; color: #7A0E17; }
+.group-list-item { display: flex; align-items: center; gap: 8px; }
+.group-list-item i { color: #7A0E17; }
+footer { margin-top: 60px; padding: 20px 0; background-color: #1C1C1C; color: white; text-align: center; }

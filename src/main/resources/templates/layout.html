@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="fragments :: head(${pageTitle})"></head>
+
+<body>
+
+<div th:replace="navbar :: navbar"></div>
+
+<main class="container py-4" layout:fragment="content">
+    <!-- Contenido específico de cada página irá aquí -->
+</main>
+
+<div th:replace="fragments :: footer"></div>
+
+</body>
+</html>
