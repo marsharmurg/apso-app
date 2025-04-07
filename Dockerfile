@@ -1,16 +1,20 @@
 FROM eclipse-temurin:17-jdk-alpine
 
-# Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copia los archivos necesarios
-COPY . .
+COPY .mvn/ .mvn/
+COPY mvnw pom.xml ./
 
-# Da permisos de ejecución al wrapper de Maven
 RUN chmod +x mvnw
+RUN ./mvnw dependency:go-offline
 
-# Construye el proyecto sin correr tests
-RUN ./mvnw clean package -DskipTests
+COPY src ./src
 
-# Ejecuta el jar generado
-CMD ["java", "-jar", "target/apso-0.0.1-SNAPSHOT.jar"]
+RUN ./mvnw package -DskipTests
+
+FROM eclipse-temurin:17-jre-alpine
+
+WORKDIR /app
+COPY --from=0 /app/target/*.jar app.jar
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
