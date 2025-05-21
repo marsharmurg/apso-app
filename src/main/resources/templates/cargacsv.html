@@ -1,16 +1,69 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
-    <title>Cargar Estudiantes CSV</title>
+    <title layout:title-pattern="$CONTENT | APSO">Cargar Estudiantes</title>
 </head>
 <body>
-    <h1>Carga de Estudiantes desde CSV</h1>
+<main layout:fragment="content">
 
-    <form method="post" enctype="multipart/form-data" th:action="@{/cargacsv}">
-        <input type="file" name="file" accept=".csv" required />
-        <button type="submit">Cargar CSV</button>
+    <h1 class="section-title">Carga de Estudiantes desde CSV</h1>
+
+    <div th:if="${mensaje}" class="alert alert-success" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <span th:text="${mensaje}"></span>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+
+            <form method="post" enctype="multipart/form-data" th:action="@{/cargacsv}">
+                <div class="mb-3">
+                    <label class="form-label">Selecciona archivo CSV:</label>
+                    <input type="file" name="file" accept=".csv" required class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-upload me-1"></i> Cargar CSV
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <h2 class="section-title">Estudiantes cargados</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Grupo Teórico</th>
+                    <th>Asignatura</th>
+                    <th>Carga ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="estudiante : ${estudiantes}">
+                    <td th:text="${estudiante.id}"></td>
+                    <td th:text="${estudiante.nombre}"></td>
+                    <td th:text="${estudiante.email}"></td>
+                    <td th:text="${estudiante.grupoTeorico}"></td>
+                    <td th:text="${estudiante.asignatura}"></td>
+                    <td th:text="${estudiante.cargaId}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <form method="post" action="/cargacsv/eliminar"
+        onsubmit="return confirm('¿Estás seguro de que deseas eliminar TODOS los estudiantes?');">
+        <button type="submit" class="btn btn-danger mt-3">
+            <i class="bi bi-trash-fill me-1"></i> Eliminar todos los estudiantes
+        </button>
     </form>
 
-    <p th:if="${mensaje}" th:text="${mensaje}"></p>
+</main>
 </body>
 </html>
