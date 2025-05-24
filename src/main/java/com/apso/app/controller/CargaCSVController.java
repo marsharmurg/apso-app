@@ -3,6 +3,9 @@ package com.apso.app.controller;
 import com.apso.app.service.CargaCSVService;
 import com.apso.app.repository.EstudianteRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +19,11 @@ public class CargaCSVController {
     private final CargaCSVService cargaCSVService;
 
     @GetMapping("/cargacsv")
-    public String mostrarFormularioCarga(Model model) {
+    public String mostrarFormularioCarga(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
+        if (oidcUser != null) {
+            model.addAttribute("userName", oidcUser.getFullName());
+            model.addAttribute("userEmail", oidcUser.getEmail());
+        }
         model.addAttribute("estudiantes", estudianteRepository.findAll());
         return "cargacsv";
     }
@@ -34,7 +41,7 @@ public class CargaCSVController {
     }
 
     @PostMapping("/cargacsv/eliminar")
-    public String eliminarTodosLosEstudiantes(Model model) {
+    public String eliminarTodosLosEstudiantes(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
         model.addAttribute("estudiantes", estudianteRepository.findAll());
         estudianteRepository.deleteAll(); // Borra todos los registros
         model.addAttribute("mensaje", "Todos los estudiantes han sido eliminados exitosamente.");
