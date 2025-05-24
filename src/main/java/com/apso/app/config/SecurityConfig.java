@@ -1,0 +1,91 @@
+package com.apso.app.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.security.config.Customizer;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    private final String ROLE_CLAIM = "https://apso.com/roles";
+
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//            .authorizeHttpRequests(auth -> auth
+//                .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/public/**").permitAll()
+//                .requestMatchers("/admin/**").hasAuthority("ROLE_admin")
+//                .requestMatchers("/user/**").hasAuthority("ROLE_user")
+//                .anyRequest().authenticated()
+//            )
+//            .oauth2Login()  // Login con Auth0
+//            .and()
+//            .logout(logout -> logout.logoutSuccessUrl("/")) // Redirigir a home tras logout
+//            .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt
+//              .jwtAuthenticationConverter(jwtAuthenticationConverter()))); // Para validar tokens JWT
+//
+//        return http.build();
+//    }
+
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .authorizeHttpRequests(authz -> authz
+            .requestMatchers("/", "/cargacsv", "/sorteogrupos", "/css/**", "/js/**", "/images/**").permitAll()  // acceso libre (guest)
+            .anyRequest().authenticated()  // todo lo demás requiere login
+        )
+        .oauth2Login(Customizer.withDefaults())  // habilita login con Auth0
+        .logout(logout -> logout
+            .logoutSuccessUrl("/")
+            .invalidateHttpSession(true)
+            .clearAuthentication(true)
+            .deleteCookies("JSESSIONID")
+        )
+        .oauth2ResourceServer(oauth2 -> oauth2
+            .jwt(jwt -> jwt
+                .jwtAuthenticationConverter(jwtAuthenticationConverter())  // mapea los roles
+            )
+        );
+    return http.build();
+}
+
+    /**
+     * Convierte los claims del token JWT en roles Spring Security.
+     */
+    private Converter<Jwt, Collection<GrantedAuthority>> authoritiesConverter() {
+        return jwt -> {
+            List<String> roles = jwt.getClaimAsStringList(ROLE_CLAIM);
+            if (roles == null) return List.of();
+            return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(Collectors.toList());
+        };
+    }
+
+    /**
+     * Combinamos el convertidor de authorities personalizado con el convertidor por defecto.
+     */
+    private JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(authoritiesConverter());
+        return converter;
+    }
+}
