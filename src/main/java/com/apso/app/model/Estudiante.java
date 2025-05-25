@@ -33,7 +33,4 @@ public class Estudiante {
         inverseJoinColumns = @JoinColumn(name = "sorteo_id")
     )
     private List<SorteoGrupal> sorteos;
-
-    // Constructor vacío y constructor con parámetros proporcionados por Lombok
 }
-
