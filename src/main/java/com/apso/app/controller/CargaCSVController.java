@@ -1,5 +1,6 @@
 package com.apso.app.controller;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 import com.apso.app.repository.EstudianteRepository;
@@ -59,9 +60,27 @@ public class CargaCSVController {
     }
 
     @PostMapping("/cargacsv/eliminar")
+    public String eliminarTodosLosEstudiantes(
+            @AuthenticationPrincipal OidcUser oidcUser,
+            RedirectAttributes redirectAttrs) throws AccessDeniedException {
+
+        List<String> roles = oidcUser.getClaimAsStringList("https://apso.app/claims/roles");
+        
+        if (roles == null || !roles.contains("admin")) {
+            throw new AccessDeniedException("No tienes permisos para realizar esta acción.");
+        }
+
+        estudianteRepository.deleteAll();
+        redirectAttrs.addFlashAttribute("mensaje", "Todos los estudiantes han sido eliminados exitosamente.");
+        return "redirect:/cargacsv";
+    }
+
+    /**
+    @PostMapping("/cargacsv/eliminar")
     public String eliminarTodosLosEstudiantes(RedirectAttributes redirectAttrs) {
         estudianteRepository.deleteAll();
         redirectAttrs.addFlashAttribute("mensaje", "Todos los estudiantes han sido eliminados exitosamente.");
         return "redirect:/cargacsv";
     }
+    */
 }

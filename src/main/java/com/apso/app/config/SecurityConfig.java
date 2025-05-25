@@ -18,6 +18,17 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+
+import java.util.HashSet;
+import java.util.Set;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -108,6 +119,7 @@ public class SecurityConfig {
             .oauth2Login(oauth -> oauth
                 .loginPage("/oauth2/authorization/auth0")
                 .defaultSuccessUrl("/", true)
+                .userInfoEndpoint(userInfo -> userInfo.oidcUserService(oidcUserService()))
             )
             .logout(logout -> logout
                 .logoutSuccessHandler((request, response, authentication) -> {
@@ -170,5 +182,29 @@ public class SecurityConfig {
 
         return converter;
     }
+
+    @Bean
+    public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
+        OidcUserService delegate = new OidcUserService();
+
+        return userRequest -> {
+            OidcUser oidcUser = delegate.loadUser((OidcUserRequest) userRequest);
+
+            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
+
+            // Extraer roles del claim personalizado
+            List<String> roles = oidcUser.getClaimAsStringList("https://apso.app/claims/roles");
+            System.out.println("🔍 Roles del usuario autenticado: " + roles);
+
+            if (roles != null) {
+                for (String role : roles) {
+                    mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+                }
+            }
+
+            return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
+        };
+    }
+
 
 }
