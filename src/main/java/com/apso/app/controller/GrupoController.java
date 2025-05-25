@@ -3,6 +3,9 @@ package com.apso.app.controller;
 import com.apso.app.model.Estudiante;
 import com.apso.app.repository.EstudianteRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +20,21 @@ public class GrupoController {
 
     // ✅ Muestra la vista con el formulario para realizar el sorteo
     @GetMapping("/sorteogrupos")
-    public String mostrarFormularioSorteo(Model model) {
+    public String mostrarFormularioSorteo(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
+        if (oidcUser != null) {
+            model.addAttribute("userName", oidcUser.getFullName());
+            model.addAttribute("userEmail", oidcUser.getEmail());
+        }
         return "sorteogrupos"; // Este archivo HTML debe estar en src/main/resources/templates
     }
 
     // ✅ Procesa el sorteo al enviar el formulario
     @PostMapping("/sorteogrupos")
-    public String procesarSorteo(@RequestParam("cantidadGrupos") int cantidadGrupos, Model model) {
+    public String procesarSorteo(@AuthenticationPrincipal OidcUser oidcUser, @RequestParam("cantidadGrupos") int cantidadGrupos, Model model) {
+        if (oidcUser != null) {
+            model.addAttribute("userName", oidcUser.getFullName());
+            model.addAttribute("userEmail", oidcUser.getEmail());
+        }
 
         List<Estudiante> estudiantes = estudianteRepository.findAll();
 

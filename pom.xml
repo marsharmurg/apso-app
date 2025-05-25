@@ -43,6 +43,34 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- P2 Inicia adición de dependencias -->
+		<!-- Auth0 Spring Security -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>auth0-spring-security-api</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+
+		<!-- Spring Security Oauth2 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
+
+		<!-- Para Thymeleaf y Spring Security -->
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
+		</dependency>
+
+		<!-- Spring Security OAuth2 Resource Server (necesario para JWT con Auth0) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>
+
+		<!-- P2 Finaliza adición de dependencias -->
+
 		<dependency>
     		<groupId>org.apache.commons</groupId>
     		<artifactId>commons-csv</artifactId>
