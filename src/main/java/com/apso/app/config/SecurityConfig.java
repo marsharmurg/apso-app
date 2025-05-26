@@ -123,7 +123,8 @@ public class SecurityConfig {
             )
             .logout(logout -> logout
                 .logoutSuccessHandler((request, response, authentication) -> {
-                    String returnTo = "http://localhost:8080/";
+                    String returnTo = "https://apso-appbackend.onrender.com/";
+                    //String returnTo = "http://localhost:8080/";
                     String clientId = "spdpLLdmgrGBxpDqRm0PoCQRxnlJEw4t"; 
                     String logoutUrl = "https://dev-e7bxsuqtgxjngf5d.us.auth0.com/v2/logout?client_id=" + clientId + "&returnTo=" + returnTo;
                     response.sendRedirect(logoutUrl);
