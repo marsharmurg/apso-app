@@ -18,7 +18,7 @@
 ---
 
 ## 📁 Estructura del Proyecto
-
+```bash
 apso-app/
 ├── src/
 │ └── main/
@@ -35,7 +35,7 @@ apso-app/
 │ └── ejemplo-estudiantes.csv
 ├── README.md
 ├── pom.xml
-
+```
 ---
 
 ## 🚀 Despliegue rápido
@@ -58,10 +58,11 @@ Puedes cargar estudiantes desde la interfaz web accediendo a:
 Ruta: /cargacsv
 
 El archivo CSV debe tener el siguiente formato:
+```bash
 nombre,email,grupo_teorico,asignatura,carga_id
 Andrea Lopez,andrea.lopez@ues.edu.sv,GT01,Fisica I,202501
 Carlos Rivera,carlos.rivera@ues.edu.sv,GT02,Quimica General,202502
-...
+```
 
 Nota: El archivo ejemplo: estudiantes.csv se encuentra en la carpeta recursos/ en la raíz del proyecto.
 El campo carga_id debe ser un número entero con el formato 2025##.
