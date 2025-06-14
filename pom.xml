@@ -86,6 +86,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<version>42.7.3</version> <!-- versión actual estable en 2025 -->
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>

@@ -49,6 +49,8 @@ apso-app/
 4. Establece variables de entorno necesarias (como las credenciales de Auth0 y la URL de la base de datos Neon).
 5. Render se encargará del resto 🚀
 
+Si quieres visitar nuestro despliegue ve al siguiente enlace: https://apso-appbackend.onrender.com/
+
 ---
 
 ## 📄 Carga de estudiantes vía CSV
