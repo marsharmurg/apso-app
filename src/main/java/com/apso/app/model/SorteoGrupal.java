@@ -60,28 +60,14 @@ public class SorteoGrupal {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    // Método Ref. Error GrupoController.java
-    public void setUsuario(Usuario usuario) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    private int numeroGrupos;
 
-    public void setTitulo(String titulo) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+public void setNumeroGrupos(int numeroGrupos) {
+    this.numeroGrupos = numeroGrupos;
+}
 
-    public void setCantidadGrupos(int cantidadGruposTemporal) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+public int getNumeroGrupos() {
+    return numeroGrupos;
+}
 
-    public void setFechaHora(LocalDateTime now) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void setResultado(String toString) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void setEstudiantes(List<Estudiante> todosLosEstudiantes) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }
