@@ -1,0 +1,19 @@
+<h1>Historial de Sorteos</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Fecha/Hora</th>
+            <th>N° Grupos</th>
+            <th>Resultado</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="sorteo : ${sorteos}">
+            <td th:text="${sorteo.titulo}"></td>
+            <td th:text="${#temporals.format(sorteo.fechaHora, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${sorteo.numeroGrupos}"></td>
+            <td th:text="${sorteo.resultado}"></td>
+        </tr>
+    </tbody>
+</table>

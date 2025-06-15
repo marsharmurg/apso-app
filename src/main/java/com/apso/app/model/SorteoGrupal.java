@@ -3,6 +3,7 @@ package com.apso.app.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -17,13 +18,29 @@ public class SorteoGrupal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombreSorteo;
+    @Column(name = "titulo", length = 50, nullable = false)
+    private String titulo;
 
+    @Column(name = "fecha_sorteo", nullable = false)
+    private LocalDateTime fechaHora;
+
+    @Column(name = "cantidad_grupos", nullable = false)
     private Integer cantidadGrupos;
 
-    private String fechaSorteo;
+    @Column(name = "resultado", columnDefinition = "TEXT", nullable = false)
+    private String resultado; // Guarda los grupos formados como texto plano o JSON
 
     // Relación muchos a muchos con Estudiante
-    @ManyToMany(mappedBy = "sorteos")
+    @ManyToMany
+    @JoinTable(
+        name = "estudiante_sorteo",
+        joinColumns = @JoinColumn(name = "sorteo_id"),
+        inverseJoinColumns = @JoinColumn(name = "estudiante_id")
+    )
     private List<Estudiante> estudiantes;
+
+    // Relación con el usuario que creó el sorteo
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 }
