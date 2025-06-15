@@ -43,4 +43,44 @@ public class Estudiante {
         inverseJoinColumns = @JoinColumn(name = "sorteo_id")
     )
     private List<SorteoGrupal> sorteos;
+
+    // Métodos adicionales para evitar errores de compilación CargaCSVService.java
+    public void setNombre(String get) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setEmail(String get) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setGrupoTeorico(String get) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setAsignatura(String get) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setCargaId(long parseLong) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setUsuario(Usuario usuarioActual) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    // Métodos adicionales para evitar errores de compilación GrupoController.java
+    public AbstractStringBuilder getNombre() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    private static class AbstractStringBuilder {
+
+        public AbstractStringBuilder() {
+        }
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
 }
