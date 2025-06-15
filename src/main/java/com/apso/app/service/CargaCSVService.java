@@ -23,9 +23,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CargaCSVService {
 
-    private final EstudianteRepository estudianteRepository;
-    private final UsuarioService usuarioService;
-    private final HttpServletRequest request;
+    private final EstudianteRepository estudianteRepository = null;
+    private final UsuarioService usuarioService = null;
+    private final HttpServletRequest request = null;
 
     public void cargarEstudiantesDesdeCSV(MultipartFile archivoCSV) throws Exception {
         List<Estudiante> estudiantes = new ArrayList<>();
