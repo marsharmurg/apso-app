@@ -31,3 +31,15 @@ public class Usuario {
     private List<SorteoGrupal> sorteos;
 
 }
+    private String sub;
+
+public void setSub(String sub) {
+    this.sub = sub;
+}
+
+public String getSub() {
+    return sub;
+}
+
+
+}

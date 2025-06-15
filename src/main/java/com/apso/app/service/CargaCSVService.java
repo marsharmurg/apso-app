@@ -41,8 +41,6 @@ public class CargaCSVService {
                 estudiante.setGrupoTeorico(record.get("grupo_teorico"));
                 estudiante.setAsignatura(record.get("asignatura"));
                 estudiante.setCargaId(Long.parseLong(record.get("carga_id")));
-                estudiante.setUsuario(usuarioActual); // vínculo directo al usuario
-
                 estudiantes.add(estudiante);
             }
 
