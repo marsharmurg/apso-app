@@ -79,7 +79,7 @@ public class GrupoController {
         }
 
         String sub = oidcUser.getSubject();
-        Usuario usuario = usuarioRepository.findBySub(sub)
+        Usuario usuario = usuarioRepository.findByAuth0Id(sub)
                 .orElseGet(() -> {
                     Usuario nuevo = new Usuario();
                     nuevo.setSub(sub);
