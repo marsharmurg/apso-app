@@ -21,22 +21,13 @@ public class Usuario {
     @Column(name = "auth0_id", unique = true, nullable = false)
     private String auth0Id;
 
+    private String sub;
+
     private String nombre;
 
     private String email;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SorteoGrupal> sorteos;
-
-    private String sub;
-
-public void setSub(String sub) {
-    this.sub = sub;
-}
-
-public String getSub() {
-    return sub;
-}
-
 
 }

@@ -6,9 +6,7 @@ import com.apso.app.model.Usuario;
 import com.apso.app.repository.EstudianteRepository;
 import com.apso.app.repository.SorteoGrupalRepository;
 import com.apso.app.repository.UsuarioRepository;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
@@ -17,23 +15,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
 public class GrupoController {
 
-    private final EstudianteRepository estudianteRepository = null;
-    private final SorteoGrupalRepository sorteoGrupalRepository = null;
-    private final UsuarioRepository usuarioRepository = null;
+    private final EstudianteRepository estudianteRepository;
+    private final SorteoGrupalRepository sorteoGrupalRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    private List<List<Estudiante>> resultadoTemporal; // Guarda el sorteo no guardado
+    private List<List<Estudiante>> resultadoTemporal;
     private int cantidadGruposTemporal = 0;
 
     @GetMapping("/sorteogrupos")
     public String mostrarFormularioSorteo(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
         agregarDatosUsuario(model, oidcUser);
-        model.addAttribute("grupos", null); // Sin sorteo al inicio
+        model.addAttribute("grupos", null);
         return "sorteogrupos";
     }
 
@@ -81,9 +78,8 @@ public class GrupoController {
             return "sorteogrupos";
         }
 
-        // Obtener o crear usuario desde Auth0
         String sub = oidcUser.getSubject();
-        Usuario usuario = usuarioRepository.findByAuth0Id(sub)
+        Usuario usuario = usuarioRepository.findBySub(sub)
                 .orElseGet(() -> {
                     Usuario nuevo = new Usuario();
                     nuevo.setSub(sub);
@@ -92,14 +88,12 @@ public class GrupoController {
                     return usuarioRepository.save(nuevo);
                 });
 
-        // Crear sorteo
         SorteoGrupal sorteo = new SorteoGrupal();
         sorteo.setTitulo(titulo);
         sorteo.setCantidadGrupos(cantidadGruposTemporal);
         sorteo.setFechaHora(LocalDateTime.now());
         sorteo.setUsuario(usuario);
 
-        // Guardar el resultado como texto plano
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < resultadoTemporal.size(); i++) {
             sb.append("Grupo ").append(i + 1).append(":\n");
@@ -110,13 +104,11 @@ public class GrupoController {
         }
         sorteo.setResultado(sb.toString());
 
-        // Agregar estudiantes al sorteo
         List<Estudiante> todosLosEstudiantes = resultadoTemporal.stream()
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .toList();
         sorteo.setEstudiantes(todosLosEstudiantes);
 
-        // Guardar sorteo
         sorteoGrupalRepository.save(sorteo);
 
         model.addAttribute("mensaje", "Sorteo guardado exitosamente como: " + titulo);
