@@ -28,21 +28,15 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SorteoGrupal> sorteos;
 
-    // Resuelve errores de compilación al no tener implementaciones: UsuarioService
-    public void setAuth0Id(String auth0Id) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    private String sub;
 
-    public void setNombre(String fullName) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+public void setSub(String sub) {
+    this.sub = sub;
+}
 
-    public void setEmail(String email) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+public String getSub() {
+    return sub;
+}
 
-    public void setSub(String sub) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setSub'");
-    }
+
 }
