@@ -20,7 +20,7 @@ public class SorteoGrupalService {
         SorteoGrupal sorteo = new SorteoGrupal();
         sorteo.setTitulo(titulo);
         sorteo.setFechaHora(LocalDateTime.now());
-        sorteo.setNumeroGrupos(numeroGrupos);
+        sorteo.setCantidadGrupos(numeroGrupos);
         sorteo.setResultado(resultado);
         sorteo.setEstudiantes(estudiantes);
         sorteo.setUsuario(usuario);
