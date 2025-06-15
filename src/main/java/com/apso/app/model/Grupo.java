@@ -24,9 +24,4 @@ public class Grupo {
 
     @OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EstudianteGrupo> estudianteGrupos;
-
-    public void setEstudianteGrupos(List<EstudianteGrupo> estudianteGrupos) {
-        this.estudianteGrupos = estudianteGrupos;
-    }
 }
-

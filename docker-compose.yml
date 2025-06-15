@@ -1,14 +1,4 @@
 services:
-  db:
-    image: postgres
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_DB: apso_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password_example
-    restart: unless-stopped
-
   app:
     build:
       context: .
@@ -21,7 +11,5 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require
       - SPRING_DATASOURCE_USERNAME=${DB_USER}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
-    depends_on:
-      - db
+      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
     restart: unless-stopped
