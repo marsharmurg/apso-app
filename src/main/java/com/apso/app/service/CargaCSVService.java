@@ -2,9 +2,7 @@ package com.apso.app.service;
 
 import com.apso.app.model.Estudiante;
 import com.apso.app.model.Usuario;
-import com.apso.app.model.Usuario;
 import com.apso.app.repository.EstudianteRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
@@ -23,14 +21,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CargaCSVService {
 
-    private final EstudianteRepository estudianteRepository = null;
-    private final UsuarioService usuarioService = null;
-    private final HttpServletRequest request = null;
+    private final EstudianteRepository estudianteRepository;
+    private final UsuarioService usuarioService;
+    private final HttpServletRequest request;
 
     public void cargarEstudiantesDesdeCSV(MultipartFile archivoCSV) throws Exception {
         List<Estudiante> estudiantes = new ArrayList<>();
-
-        Usuario usuarioActual = usuarioService.obtenerUsuarioDesdeRequest(request);
 
         Usuario usuarioActual = usuarioService.obtenerUsuarioDesdeRequest(request);
 
