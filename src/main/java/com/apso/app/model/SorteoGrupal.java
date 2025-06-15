@@ -43,4 +43,15 @@ public class SorteoGrupal {
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
+
+    private int numeroGrupos;
+
+public void setNumeroGrupos(int numeroGrupos) {
+    this.numeroGrupos = numeroGrupos;
+}
+
+public int getNumeroGrupos() {
+    return numeroGrupos;
+}
+
 }
