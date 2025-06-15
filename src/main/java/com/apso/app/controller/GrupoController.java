@@ -20,9 +20,9 @@ import java.util.*;
 @RequiredArgsConstructor
 public class GrupoController {
 
-    private final EstudianteRepository estudianteRepository;
-    private final SorteoGrupalRepository sorteoGrupalRepository;
-    private final UsuarioRepository usuarioRepository;
+    private final EstudianteRepository estudianteRepository = null;
+    private final SorteoGrupalRepository sorteoGrupalRepository = null;
+    private final UsuarioRepository usuarioRepository = null;
 
     private List<List<Estudiante>> resultadoTemporal;
     private int cantidadGruposTemporal = 0;
