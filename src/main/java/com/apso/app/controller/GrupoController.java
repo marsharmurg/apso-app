@@ -123,7 +123,7 @@ public class GrupoController {
         resultadoTemporal = null;
         cantidadGruposTemporal = 0;
 
-        return "sorteogrupos";
+        return "redirect:/sorteogrupos";
     }
 
     @PostMapping("/sorteogrupos/reiniciar")
