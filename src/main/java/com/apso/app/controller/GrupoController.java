@@ -135,6 +135,31 @@ public class GrupoController {
         return "sorteogrupos";
     }
 
+    @GetMapping("/historialsorteos")
+    public String mostrarHistorialSorteos(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
+        agregarDatosUsuario(model, oidcUser);
+
+        if (oidcUser == null) {
+            model.addAttribute("error", "Debes iniciar sesión para ver el historial.");
+            return "redirect:/";
+        }
+
+        String sub = oidcUser.getSubject();
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByAuth0Id(sub);
+
+        if (usuarioOpt.isEmpty()) {
+            model.addAttribute("error", "No se encontró el usuario.");
+            return "redirect:/";
+        }
+
+        Usuario usuario = usuarioOpt.get();
+        List<SorteoGrupal> sorteos = sorteoGrupalRepository.findByUsuario(usuario);
+        model.addAttribute("sorteos", sorteos);
+
+        return "historialsorteos";
+    }
+
+
     private void agregarDatosUsuario(Model model, OidcUser oidcUser) {
         if (oidcUser != null) {
             model.addAttribute("userName", oidcUser.getFullName());
