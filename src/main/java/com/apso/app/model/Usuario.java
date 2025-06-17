@@ -15,16 +15,13 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // ID único del usuario en Auth0 (claim 'sub')
-    @Column(name = "auth0_id", unique = true, nullable = false)
+    private Long id;    @Column(name = "auth0_id", unique = true, nullable = false)
     private String auth0Id;
 
-    private String sub;
-
+    @Column(nullable = false)
     private String nombre;
 
+    @Column(nullable = false)
     private String email;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)

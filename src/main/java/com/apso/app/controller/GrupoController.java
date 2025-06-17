@@ -142,14 +142,12 @@ public class GrupoController {
             if (resultadoTemporal == null || resultadoTemporal.isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "No hay un sorteo para guardar.");
                 return "redirect:/sorteogrupos";
-            }
-
-            // Obtener o crear usuario
-            String sub = oidcUser.getSubject();
-            Usuario usuario = usuarioRepository.findByAuth0Id(sub)
+            }            // Obtener o crear usuario
+            String auth0Id = oidcUser.getSubject();
+            Usuario usuario = usuarioRepository.findByAuth0Id(auth0Id)
                 .orElseGet(() -> {
                     Usuario nuevo = new Usuario();
-                    nuevo.setSub(sub);
+                    nuevo.setAuth0Id(auth0Id);
                     nuevo.setNombre(oidcUser.getFullName());
                     nuevo.setEmail(oidcUser.getEmail());
                     return usuarioRepository.save(nuevo);
@@ -203,10 +201,20 @@ public class GrupoController {
         cantidadGruposTemporal = 0;
         model.addAttribute("mensaje", "Sorteo reiniciado.");
         return "sorteogrupos";
-    }
-
-    @GetMapping("/historialsorteos")
+    }    @GetMapping("/historialsorteos")
     public String mostrarHistorialSorteos(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
+        if (oidcUser == null) {
+            return "redirect:/";
+        }
+
+        String auth0Id = oidcUser.getSubject();
+        Usuario usuario = usuarioRepository.findByAuth0Id(auth0Id).orElse(null);
+        
+        if (usuario != null) {
+            List<SorteoGrupal> sorteos = sorteoGrupalRepository.findByUsuarioOrderByFechaHoraDesc(usuario);
+            model.addAttribute("sorteos", sorteos);
+        }
+
         agregarDatosUsuario(model, oidcUser);
 
         if (oidcUser == null) {
