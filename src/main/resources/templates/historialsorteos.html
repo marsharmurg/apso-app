@@ -1,19 +1,51 @@
-<h1>Historial de Sorteos</h1>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Título</th>
-            <th>Fecha/Hora</th>
-            <th>N° Grupos</th>
-            <th>Resultado</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="sorteo : ${sorteos}">
-            <td th:text="${sorteo.titulo}"></td>
-            <td th:text="${#temporals.format(sorteo.fechaHora, 'yyyy-MM-dd HH:mm')}"></td>
-            <td th:text="${sorteo.numeroGrupos}"></td>
-            <td th:text="${sorteo.resultado}"></td>
-        </tr>
-    </tbody>
-</table>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Historial de Sorteos - APSO</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <!-- Mensajes de error o éxito -->
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+        </div>
+
+        <div class="container mt-4">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="mb-0">Historial de Sorteos</h3>
+                </div>
+                <div class="card-body">
+                    <div th:if="${sorteos != null and !sorteos.empty}">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-danger">
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Fecha/Hora</th>
+                                    <th>N° Grupos</th>
+                                    <th>Resultado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="sorteo : ${sorteos}">
+                                    <td th:text="${sorteo.titulo}"></td>
+                                    <td th:text="${#temporals.format(sorteo.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
+                                    <td th:text="${sorteo.cantidadGrupos}"></td>
+                                    <td>
+                                        <pre th:text="${sorteo.resultado}" class="mb-0" style="white-space: pre-wrap;"></pre>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:if="${sorteos == null or sorteos.empty}" class="alert alert-info">
+                        No hay sorteos guardados en el historial.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

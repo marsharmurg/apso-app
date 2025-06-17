@@ -206,17 +206,19 @@ public class GrupoController {
         // Verificar autenticación
         if (oidcUser == null) {
             model.addAttribute("error", "Debes iniciar sesión para ver el historial.");
-            return "redirect:/";
+            return "historialsorteos";
         }
 
         // Buscar usuario
         String auth0Id = oidcUser.getSubject();
-        Usuario usuario = usuarioRepository.findByAuth0Id(auth0Id).orElse(null);
-        
-        if (usuario == null) {
-            model.addAttribute("error", "No se encontró el usuario.");
-            return "redirect:/";
-        }
+        Usuario usuario = usuarioRepository.findByAuth0Id(auth0Id)
+            .orElseGet(() -> {
+                Usuario nuevo = new Usuario();
+                nuevo.setAuth0Id(auth0Id);
+                nuevo.setNombre(oidcUser.getFullName());
+                nuevo.setEmail(oidcUser.getEmail());
+                return usuarioRepository.save(nuevo);
+            });
 
         // Obtener sorteos ordenados por fecha
         List<SorteoGrupal> sorteos = sorteoGrupalRepository.findByUsuarioOrderByFechaHoraDesc(usuario);
