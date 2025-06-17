@@ -2,9 +2,7 @@ package com.apso.app.service;
 
 import com.apso.app.model.Estudiante;
 import com.apso.app.model.Usuario;
-import com.apso.app.model.Usuario;
 import com.apso.app.repository.EstudianteRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
@@ -23,14 +21,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CargaCSVService {
 
-    private final EstudianteRepository estudianteRepository = null;
-    private final UsuarioService usuarioService = null;
-    private final HttpServletRequest request = null;
+    private final EstudianteRepository estudianteRepository;
+    private final UsuarioService usuarioService;
+    private final HttpServletRequest request;
 
     public void cargarEstudiantesDesdeCSV(MultipartFile archivoCSV) throws Exception {
         List<Estudiante> estudiantes = new ArrayList<>();
-
-        Usuario usuarioActual = usuarioService.obtenerUsuarioDesdeRequest(request);
 
         Usuario usuarioActual = usuarioService.obtenerUsuarioDesdeRequest(request);
 
@@ -44,8 +40,8 @@ public class CargaCSVService {
                 estudiante.setEmail(record.get("email"));
                 estudiante.setGrupoTeorico(record.get("grupo_teorico"));
                 estudiante.setAsignatura(record.get("asignatura"));
-                estudiante.setCargaId(Long.parseLong(record.get("carga_id")));
-                estudiante.setUsuario(usuarioActual); // vínculo directo al usuario
+                //estudiante.setCargaId(record.get("carga_id"));
+                estudiante.setCargaId(Integer.parseInt(record.get("carga_id")));
 
                 estudiantes.add(estudiante);
             }

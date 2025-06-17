@@ -30,15 +30,4 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SorteoGrupal> sorteos;
 
-    private String sub;
-
-public void setSub(String sub) {
-    this.sub = sub;
-}
-
-public String getSub() {
-    return sub;
-}
-
-
 }

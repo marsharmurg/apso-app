@@ -3,8 +3,6 @@ package com.apso.app.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -19,55 +17,13 @@ public class SorteoGrupal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "titulo", length = 50, nullable = false)
-    private String titulo;
+    private String nombreSorteo;
 
-    @Column(name = "fecha_sorteo", nullable = false)
-    private LocalDateTime fechaHora;
-
-    @Column(name = "cantidad_grupos", nullable = false)
-    @Column(name = "titulo", length = 50, nullable = false)
-    private String titulo;
-
-    @Column(name = "fecha_sorteo", nullable = false)
-    private LocalDateTime fechaHora;
-
-    @Column(name = "cantidad_grupos", nullable = false)
     private Integer cantidadGrupos;
 
-    @Column(name = "resultado", columnDefinition = "TEXT", nullable = false)
-    private String resultado; // Guarda los grupos formados como texto plano o JSON
-    @Column(name = "resultado", columnDefinition = "TEXT", nullable = false)
-    private String resultado; // Guarda los grupos formados como texto plano o JSON
+    private String fechaSorteo;
 
     // Relación muchos a muchos con Estudiante
-    @ManyToMany
-    @JoinTable(
-        name = "estudiante_sorteo",
-        joinColumns = @JoinColumn(name = "sorteo_id"),
-        inverseJoinColumns = @JoinColumn(name = "estudiante_id")
-    )
-    @ManyToMany
-    @JoinTable(
-        name = "estudiante_sorteo",
-        joinColumns = @JoinColumn(name = "sorteo_id"),
-        inverseJoinColumns = @JoinColumn(name = "estudiante_id")
-    )
+    @ManyToMany(mappedBy = "sorteos")
     private List<Estudiante> estudiantes;
-
-    // Relación con el usuario que creó el sorteo
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
-
-    private int numeroGrupos;
-
-public void setNumeroGrupos(int numeroGrupos) {
-    this.numeroGrupos = numeroGrupos;
-}
-
-public int getNumeroGrupos() {
-    return numeroGrupos;
-}
-
 }

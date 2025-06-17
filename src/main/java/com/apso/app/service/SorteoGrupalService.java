@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SorteoGrupalService {
 
-    private final SorteoGrupalRepository sorteoGrupalRepository = null;
+    private final SorteoGrupalRepository sorteoGrupalRepository;
 
     public SorteoGrupal guardarSorteo(String titulo, List<Estudiante> estudiantes, int numeroGrupos, String resultado, Usuario usuario) {
         SorteoGrupal sorteo = new SorteoGrupal();
@@ -28,6 +28,6 @@ public class SorteoGrupalService {
     }
 
     public List<SorteoGrupal> obtenerSorteosPorUsuario(Usuario usuario) {
-        return sorteoGrupalRepository.findByUsuario(usuario);
+        return sorteoGrupalRepository.findByUsuarioOrderByFechaHoraDesc(usuario);
     }
 }
