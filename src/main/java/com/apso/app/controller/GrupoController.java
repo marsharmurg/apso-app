@@ -126,22 +126,27 @@ public class GrupoController {
 
         return "redirect:/sorteogrupos";
     }
-        */
-    @PostMapping("/sorteogrupos/guardar")
-    public String guardarSorteo(@AuthenticationPrincipal OidcUser oidcUser,
-                                @RequestParam("titulo") String titulo,
-                                RedirectAttributes redirectAttributes,
-                                Model model) {
-        agregarDatosUsuario(model, oidcUser);
+        */    @PostMapping("/sorteogrupos/guardar")
+    public String guardarSorteo(
+            @AuthenticationPrincipal OidcUser oidcUser,
+            @RequestParam("titulo") String titulo,
+            RedirectAttributes redirectAttributes) {
+        try {
+            // Verificar autenticación
+            if (oidcUser == null) {
+                redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para guardar un sorteo.");
+                return "redirect:/sorteogrupos";
+            }
 
-        if (oidcUser == null || resultadoTemporal == null || resultadoTemporal.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "No hay un sorteo para guardar.");
-            return "redirect:/sorteogrupos";
-        }
+            // Validar que haya un sorteo temporal
+            if (resultadoTemporal == null || resultadoTemporal.isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "No hay un sorteo para guardar.");
+                return "redirect:/sorteogrupos";
+            }
 
-        // Obtener o crear usuario desde Auth0
-        String sub = oidcUser.getSubject();
-        Usuario usuario = usuarioRepository.findByAuth0Id(sub)
+            // Obtener o crear usuario
+            String sub = oidcUser.getSubject();
+            Usuario usuario = usuarioRepository.findByAuth0Id(sub)
                 .orElseGet(() -> {
                     Usuario nuevo = new Usuario();
                     nuevo.setSub(sub);
@@ -150,36 +155,42 @@ public class GrupoController {
                     return usuarioRepository.save(nuevo);
                 });
 
-        // Crear sorteo
-        SorteoGrupal sorteo = new SorteoGrupal();
-        sorteo.setTitulo(titulo);
-        sorteo.setCantidadGrupos(cantidadGruposTemporal);
-        sorteo.setFechaHora(LocalDateTime.now());
-        sorteo.setUsuario(usuario);
+            // Crear sorteo
+            SorteoGrupal sorteo = new SorteoGrupal();
+            sorteo.setTitulo(titulo);
+            sorteo.setCantidadGrupos(cantidadGruposTemporal);
+            sorteo.setFechaHora(LocalDateTime.now());
+            sorteo.setUsuario(usuario);
 
-        // Guardar el resultado como texto plano
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < resultadoTemporal.size(); i++) {
-            sb.append("Grupo ").append(i + 1).append(":\n");
-            for (Estudiante est : resultadoTemporal.get(i)) {
-                sb.append("- ").append(est.getNombre()).append(" (").append(est.getEmail()).append(")\n");
+            // Guardar el resultado como texto plano
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < resultadoTemporal.size(); i++) {
+                sb.append("Grupo ").append(i + 1).append(":\n");
+                for (Estudiante est : resultadoTemporal.get(i)) {
+                    sb.append("- ").append(est.getNombre())
+                      .append(" (").append(est.getEmail()).append(")\n");
+                }
+                sb.append("\n");
             }
-            sb.append("\n");
-        }
-        sorteo.setResultado(sb.toString());
+            sorteo.setResultado(sb.toString());
 
-        // Agregar estudiantes al sorteo
-        List<Estudiante> todosLosEstudiantes = resultadoTemporal.stream()
+            // Agregar estudiantes al sorteo
+            List<Estudiante> todosLosEstudiantes = resultadoTemporal.stream()
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
-        sorteo.setEstudiantes(todosLosEstudiantes);
+            sorteo.setEstudiantes(todosLosEstudiantes);
 
-        // Guardar sorteo
-        sorteoGrupalRepository.save(sorteo);
+            // Guardar sorteo
+            sorteoGrupalRepository.save(sorteo);
 
-        redirectAttributes.addFlashAttribute("mensaje", "Sorteo guardado exitosamente como: " + titulo);
-        resultadoTemporal = null;
-        cantidadGruposTemporal = 0;
+            // Limpiar el sorteo temporal
+            resultadoTemporal = null;
+            cantidadGruposTemporal = 0;
+
+            redirectAttributes.addFlashAttribute("mensaje", "Sorteo guardado exitosamente como: " + titulo);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al guardar el sorteo: " + e.getMessage());
+        }
 
         return "redirect:/sorteogrupos";
     }
