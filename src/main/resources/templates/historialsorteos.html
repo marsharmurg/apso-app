@@ -26,6 +26,7 @@
                                     <th>Fecha/Hora</th>
                                     <th>N° Grupos</th>
                                     <th>Resultado</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,6 +36,13 @@
                                     <td th:text="${sorteo.cantidadGrupos}"></td>
                                     <td>
                                         <pre th:text="${sorteo.resultado}" class="mb-0" style="white-space: pre-wrap;"></pre>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/historialsorteos/exportar/{id}(id=${sorteo.id})}" 
+                                           class="btn btn-sm btn-danger" 
+                                           title="Exportar a PDF">
+                                            <i class="bi bi-file-earmark-pdf"></i> PDF
+                                        </a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -50,8 +58,10 @@
 
     <!-- Contenido para el modal de ayuda -->
     <div layout:fragment="help-content">
+        <h4>Guía de Uso - Historial de Sorteos</h4>
         <hr>
         <div class="help-section">
+            <h5>¿Qué es el Historial de Sorteos?</h5>
             <p>El Historial de Sorteos es una página que te permite ver todos los sorteos de grupos que has realizado y guardado anteriormente.</p>
         </div>
 
@@ -62,6 +72,7 @@
                 <li><strong>Fecha/Hora:</strong> Momento exacto en que se realizó el sorteo (hora local).</li>
                 <li><strong>N° Grupos:</strong> Cantidad de grupos en que se dividieron los estudiantes.</li>
                 <li><strong>Resultado:</strong> Muestra la distribución detallada de estudiantes en cada grupo.</li>
+                <li><strong>Acciones:</strong> Botones para realizar acciones como exportar a PDF.</li>
             </ul>
         </div>
 
@@ -70,6 +81,7 @@
             <ul>
                 <li>Los sorteos se muestran ordenados del más reciente al más antiguo.</li>
                 <li>Cada sorteo muestra la lista completa de estudiantes asignados a cada grupo.</li>
+                <li>Puedes exportar cualquier sorteo a PDF para guardarlo o compartirlo.</li>
                 <li>Si no hay sorteos guardados, verás un mensaje indicándolo.</li>
             </ul>
         </div>
@@ -80,6 +92,7 @@
                 <li>Los sorteos se guardan automáticamente cuando usas la opción "Guardar" en la página de Sorteo de Grupos.</li>
                 <li>Revisa la columna "Resultado" para ver la distribución detallada de cada sorteo.</li>
                 <li>Usa la fecha y hora para identificar sorteos específicos.</li>
+                <li>Haz clic en el botón PDF para descargar una versión en PDF del sorteo seleccionado.</li>
             </ol>
         </div>
     </div>
