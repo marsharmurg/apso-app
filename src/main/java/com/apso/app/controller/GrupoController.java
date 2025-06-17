@@ -203,36 +203,27 @@ public class GrupoController {
         return "sorteogrupos";
     }    @GetMapping("/historialsorteos")
     public String mostrarHistorialSorteos(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
-        if (oidcUser == null) {
-            return "redirect:/";
-        }
-
-        String auth0Id = oidcUser.getSubject();
-        Usuario usuario = usuarioRepository.findByAuth0Id(auth0Id).orElse(null);
-        
-        if (usuario != null) {
-            List<SorteoGrupal> sorteos = sorteoGrupalRepository.findByUsuarioOrderByFechaHoraDesc(usuario);
-            model.addAttribute("sorteos", sorteos);
-        }
-
-        agregarDatosUsuario(model, oidcUser);
-
+        // Verificar autenticación
         if (oidcUser == null) {
             model.addAttribute("error", "Debes iniciar sesión para ver el historial.");
             return "redirect:/";
         }
 
-        String sub = oidcUser.getSubject();
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByAuth0Id(sub);
-
-        if (usuarioOpt.isEmpty()) {
+        // Buscar usuario
+        String auth0Id = oidcUser.getSubject();
+        Usuario usuario = usuarioRepository.findByAuth0Id(auth0Id).orElse(null);
+        
+        if (usuario == null) {
             model.addAttribute("error", "No se encontró el usuario.");
             return "redirect:/";
         }
 
-        Usuario usuario = usuarioOpt.get();
-        List<SorteoGrupal> sorteos = sorteoGrupalRepository.findByUsuario(usuario);
+        // Obtener sorteos ordenados por fecha
+        List<SorteoGrupal> sorteos = sorteoGrupalRepository.findByUsuarioOrderByFechaHoraDesc(usuario);
         model.addAttribute("sorteos", sorteos);
+
+        // Agregar datos del usuario para la vista
+        agregarDatosUsuario(model, oidcUser);
 
         return "historialsorteos";
     }

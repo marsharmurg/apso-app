@@ -11,11 +11,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
-
-    @Id
+public class Usuario {    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;    @Column(name = "auth0_id", unique = true, nullable = false)
+    private Long id;
+
+    @Column(name = "auth0_id", unique = true, nullable = false)
     private String auth0Id;
 
     @Column(nullable = false)
