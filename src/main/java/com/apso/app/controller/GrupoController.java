@@ -170,13 +170,18 @@ public class GrupoController {
             sorteo.setFechaHora(LocalDateTime.now());
             sorteo.setUsuario(usuario);
 
-            // Guardar el resultado como texto plano
+            // Guardar el resultado como texto formateado
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < resultadoTemporal.size(); i++) {
                 sb.append("Grupo ").append(i + 1).append(":\n");
                 for (Estudiante est : resultadoTemporal.get(i)) {
-                    sb.append("- ").append(est.getNombre())
-                      .append(" (").append(est.getEmail()).append(")\n");
+                    sb.append("- ID: ").append(est.getId())
+                      .append("\n  Nombre: ").append(est.getNombre())
+                      .append("\n  Email: ").append(est.getEmail())
+                      .append("\n  Grupo Teórico: ").append(est.getGrupoTeorico())
+                      .append("\n  Asignatura: ").append(est.getAsignatura())
+                      .append("\n  Carga ID: ").append(est.getCargaId())
+                      .append("\n");
                 }
                 sb.append("\n");
             }

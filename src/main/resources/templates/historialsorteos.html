@@ -4,6 +4,18 @@
       layout:decorate="~{layout}">
 <head>
     <title>Historial de Sorteos - APSO</title>
+    <style>
+        pre.resultado {
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
 </head>
 <body>
     <div layout:fragment="content">
@@ -35,7 +47,7 @@
                                     <td th:text="${#temporals.format(sorteo.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
                                     <td th:text="${sorteo.cantidadGrupos}"></td>
                                     <td>
-                                        <pre th:text="${sorteo.resultado}" class="mb-0" style="white-space: pre-wrap;"></pre>
+                                        <pre class="resultado mb-0" th:text="${sorteo.resultado}"></pre>
                                     </td>
                                     <td>
                                         <a th:href="@{/historialsorteos/exportar/{id}(id=${sorteo.id})}" 
