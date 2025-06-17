@@ -113,7 +113,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/", "/cargacsv", "/css/**", "/js/**", "/images/**").permitAll()  // acceso libre (guest)
                 .requestMatchers(HttpMethod.POST, "/cargacsv/eliminar").hasRole("admin")  // solo admin 
-                .requestMatchers(HttpMethod.POST, "/sorteogrupos").authenticated()        // cualquier usuario autenticado
+                .requestMatchers(HttpMethod.POST, "/sorteogrupos", "/historialsorteos").authenticated()        // cualquier usuario autenticado
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth -> oauth

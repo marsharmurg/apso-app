@@ -6,10 +6,63 @@
     <title layout:title-pattern="$CONTENT | APSO">Sorteo de Grupos</title>
 </head>
 <body>
+
+<!-- Fragmentos de ayuda -->
+<th:block layout:fragment="help-title">Ayuda - Sorteo de Grupos</th:block>
+
+<th:block layout:fragment="help-content">
+    <h5><i class="bi bi-info-circle me-2"></i>Antes de Comenzar</h5>
+    <ul>
+        <li>Asegúrate de haber cargado la lista de estudiantes previamente.</li>
+        <li>El sistema no permitirá realizar sorteos si no hay estudiantes registrados.</li>
+        <li>Todos los estudiantes cargados participarán en el sorteo.</li>
+    </ul>
+
+    <h5><i class="bi bi-shuffle me-2"></i>Realizar el Sorteo</h5>
+    <ul>
+        <li>Ingresa el número de grupos que deseas formar.</li>
+        <li>El sistema verificará que el número sea válido:
+            <ul>
+                <li>Mínimo: 1 grupo</li>
+                <li>Máximo: La mitad del total de estudiantes</li>
+            </ul>
+        </li>
+        <li>Haz clic en "Ejecutar sorteo" para generar los grupos.</li>
+    </ul>
+
+    <h5><i class="bi bi-people me-2"></i>Distribución de Grupos</h5>
+    <ul>
+        <li>Los estudiantes se distribuyen aleatoriamente entre los grupos.</li>
+        <li>Si el número total de estudiantes no es divisible entre la cantidad de grupos:
+            <ul>
+                <li>Algunos grupos pueden tener un estudiante más que otros.</li>
+                <li>La diferencia máxima será de 1 estudiante entre grupos.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h5><i class="bi bi-eye me-2"></i>Visualización de Resultados</h5>
+    <ul>
+        <li>Los grupos se mostrarán en tarjetas separadas.</li>
+        <li>Cada tarjeta mostrará:
+            <ul>
+                <li>Número de grupo</li>
+                <li>Lista de integrantes con nombres y correos</li>
+            </ul>
+        </li>
+        <li>Puedes realizar un nuevo sorteo en cualquier momento.</li>
+    </ul>
+</th:block>
+
 <main layout:fragment="content">
 
     <h1 class="section-title">Sorteo de Grupos</h1>
 
+    <!-- Mensajes de éxito o error -->
+    <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <!-- Formulario para ejecutar sorteo -->
     <div class="card mb-4">
         <div class="card-body">
             <form th:action="@{/sorteogrupos}" method="post">
@@ -24,6 +77,49 @@
         </div>
     </div>
 
+    <!-- Botones adicionales solo si hay grupos generados -->
+    <div th:if="${grupos != null}" class="mb-3 d-flex gap-2">
+        <!-- Botón para abrir el modal de guardar -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#guardarModal">
+            <i class="bi bi-save me-1"></i> Guardar sorteo
+        </button>
+
+        <!-- Botón para reiniciar -->
+        <form th:action="@{/sorteogrupos/reiniciar}" method="post">
+            <button type="submit" class="btn btn-outline-danger">
+                <i class="bi bi-arrow-counterclockwise me-1"></i> Reiniciar
+            </button>
+        </form>
+
+        <!-- Botón para ver historial -->
+        <a th:href="@{/historialsorteos}" class="btn btn-outline-secondary">
+            <i class="bi bi-clock-history me-1"></i> Ver historial
+        </a>
+    </div>
+
+    <!-- Modal para ingresar el título del sorteo -->
+    <div class="modal fade" id="guardarModal" tabindex="-1" aria-labelledby="guardarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form th:action="@{/sorteogrupos/guardar}" method="post" class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="guardarModalLabel">Guardar sorteo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título del sorteo:</label>
+                        <input type="text" id="titulo" name="titulo" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Resultados de grupos -->
     <div th:if="${grupos != null}">
         <h2 class="section-title">Grupos conformados</h2>
         <div class="row g-4" th:each="grupo, iterStat : ${grupos}">
@@ -44,5 +140,9 @@
     </div>
 
 </main>
+
+<!-- Se debe tener incluido Bootstrap JS para que el modal funcione -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
